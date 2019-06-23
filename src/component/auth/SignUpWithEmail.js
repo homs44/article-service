@@ -44,11 +44,11 @@ class SignUpWithEmail extends Component {
                 </Form.Field>
                 <Form.Field>
                     <label>비밀번호</label>
-                    <input name="password" placeholder="비밀번호" value={password} onChange={this.onHandleChange} />
+                    <input name="password" type="password" placeholder="비밀번호" value={password} onChange={this.onHandleChange} />
                 </Form.Field>
                 <Form.Field>
                     <label>비밀번호 확인</label>
-                    <input name="passwordCheck" placeholder="비밀번호 확인" value={passwordCheck} onChange={this.onHandleChange} />
+                    <input name="passwordCheck" type="password" placeholder="비밀번호 확인" value={passwordCheck} onChange={this.onHandleChange} />
                 </Form.Field>
                 <Form.Button fluid type="submit" onClick={this.onSignUpWithEmail}>회원가입</Form.Button>
             </Form>
