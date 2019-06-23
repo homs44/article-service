@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import * as authActions from '../../module/auth/actions';
 
 class Header extends Component {
 
@@ -9,7 +13,7 @@ class Header extends Component {
     }
 
     onSignOut = e => {
-
+        this.props.authActions.signOut();
     }
 
     render() {
@@ -32,4 +36,16 @@ class Header extends Component {
     }
 }
 
-export default withRouter(Header);
+const mapStateToProps = (state) => {
+    return {
+        isLoading: state.auth.signOut.isLoading,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        authActions: bindActionCreators(authActions, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));
