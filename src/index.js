@@ -38,11 +38,11 @@ firebase.initializeApp(firebaseConfig);
 
 firebase.auth().onAuthStateChanged((user) => {
     store.dispatch(authActions.updateUser(user));
-    if(user){
-        store.dispatch(push('/'))
-    }else{
-        store.dispatch(push('/sign-in'))
-    }
+    // if(user){
+    //     store.dispatch(push('/'))
+    // }else{
+    //     store.dispatch(push('/sign-in'))
+    // }
 })
 
 ReactDOM.render(

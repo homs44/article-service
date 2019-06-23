@@ -16,11 +16,26 @@ class Header extends Component {
         this.props.authActions.signOut();
     }
 
+    goToArticleList = e => {
+        this.props.history.push('/')
+    }
+
+    goToAddArticle = e => {
+        this.props.history.push('/add-article')
+    }
+
     render() {
         return (
             <Menu>
                 <Menu.Item header>
                     내 서비스
+                </Menu.Item>
+
+                <Menu.Item onClick={this.goToArticleList}>
+                    게시글 리스트
+                </Menu.Item>
+                <Menu.Item onClick={this.goToAddArticle}>
+                    게시글 추가
                 </Menu.Item>
 
                 <Menu.Menu position="right">
