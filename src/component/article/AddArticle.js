@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Button, Icon } from 'semantic-ui-react';
+import { Form, Button, Message } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as articleActions from '../../module/article/actions'
+
 
 const InvisibleUploadButton = styled.input`
     display:none;
@@ -56,10 +60,11 @@ class AddArticle extends Component {
     onAddArticle = e => {
         const { image, content } = this.state;
         if (!image) {
+            this.props.articleActions.addArticleFailed(new Error('Image required'));
             return;
         }
 
-        // 게시글 추가
+        this.props.articleActions.addArticle({ file: image.file, content });
     }
 
     onDeleteImage = e => {
@@ -72,17 +77,31 @@ class AddArticle extends Component {
     render() {
 
         const { image, content } = this.state;
-
+        const { error, isLoading } = this.props;
         return (
             <Form>
                 <InvisibleUploadButton ref="image" type="file" onChange={this.onImageChange} />
                 <Button fluid onClick={this.onAddImage}>이미지 추가</Button>
                 {image && image.src ? <Preview src={image.src} onClick={this.onDeleteImage} /> : null}
                 <Form.TextArea name="content" value={content} onChange={this.onHandleChange} />
-                <Button fluid onClick={this.onAddArticle}>게시글 추가</Button>
+                <Button fluid loading={isLoading} onClick={this.onAddArticle}>게시글 추가</Button>
+                {error && error.message ? <Message>{error.message}</Message> : null}
             </Form>
         )
     }
 }
 
-export default AddArticle;
+const mapStateToProps = (state) => {
+    return {
+        isLoading: state.article.addArticle.isLoading,
+        error: state.article.addArticle.error
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        articleActions: bindActionCreators(articleActions, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddArticle);
