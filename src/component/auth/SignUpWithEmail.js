@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Form } from 'semantic-ui-react';
+import { Form, Message } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -24,14 +24,17 @@ class SignUpWithEmail extends Component {
         const { email, password, passwordCheck } = this.state;
 
         if (!email) {
+            this.props.authActions.signUpWithEmailFailed(new Error('Enter your email'))
             return;
         }
 
         if (!password) {
+            this.props.authActions.signUpWithEmailFailed(new Error('Enter your password'))
             return;
         }
 
         if (password !== passwordCheck) {
+            this.props.authActions.signUpWithEmailFailed(new Error('Passwords are not matched'))
             return;
         }
 
@@ -40,7 +43,7 @@ class SignUpWithEmail extends Component {
 
     render() {
         const { email, password, passwordCheck } = this.state;
-        const { isLoading } = this.props;
+        const { isLoading, error } = this.props;
 
         return (
             <Form>
@@ -57,6 +60,7 @@ class SignUpWithEmail extends Component {
                     <input name="passwordCheck" type="password" placeholder="비밀번호 확인" value={passwordCheck} onChange={this.onHandleChange} />
                 </Form.Field>
                 <Form.Button fluid type="submit" loading={isLoading} onClick={this.onSignUpWithEmail}>회원가입</Form.Button>
+                {error && error.message ? <Message>{error.message}</Message> : null}
             </Form>
         )
     }
@@ -65,6 +69,7 @@ class SignUpWithEmail extends Component {
 const mapStateToProps = (state) => {
     return {
         isLoading: state.auth.signUpWithEmail.isLoading,
+        error: state.auth.signUpWithEmail.error
     }
 }
 

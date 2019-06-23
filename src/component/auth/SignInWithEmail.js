@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Form, List } from 'semantic-ui-react';
+import { Form, List, Message } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -33,10 +33,12 @@ class SignInWithEmail extends Component {
         const { email, password } = this.state;
 
         if (!email) {
+            this.props.authActions.signInWithEmailFailed(new Error('Enter your email'))
             return;
         }
 
         if (!password) {
+            this.props.authActions.signInWithEmailFailed(new Error('Enter your password'))
             return;
         }
 
@@ -44,7 +46,7 @@ class SignInWithEmail extends Component {
     }
 
     onFindPassword = e => {
-
+        this.props.authActions.signInWithEmailFailed(new Error('Not implemented'))
     }
 
     goToSignUpWithEmailPage = e => {
@@ -53,7 +55,7 @@ class SignInWithEmail extends Component {
 
     render() {
         const { email, password } = this.state;
-        const { isLoading } = this.props;
+        const { isLoading, error } = this.props;
 
         return (
             <Form>
@@ -70,6 +72,7 @@ class SignInWithEmail extends Component {
                     <StyledListItem onClick={this.onFindPassword}>비밀번호를 잊으셨습니까? 비밀번호 찾기</StyledListItem>
                     <StyledListItem onClick={this.goToSignUpWithEmailPage}>회원이 아니십니까? 회원가입</StyledListItem>
                 </List>
+                {error && error.message ? <Message>{error.message}</Message> : null}
             </Form>
         )
     }
@@ -78,6 +81,7 @@ class SignInWithEmail extends Component {
 const mapStateToProps = (state) => {
     return {
         isLoading: state.auth.signInWithEmail.isLoading,
+        error: state.auth.signInWithEmail.error
     }
 }
 
