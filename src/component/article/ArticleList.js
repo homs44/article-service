@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as articleActions from '../../module/article/actions'
 import { Button } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 
 class ArticleList extends Component {
 
@@ -23,6 +24,10 @@ class ArticleList extends Component {
         this.props.articleActions.getArticleList(lastItem, 1);
     }
 
+    onItemClick = (id) => {
+        this.props.history.push('/articles/' + id);
+    }
+
     render() {
         const { list, isLoading } = this.props;
         const listView = list.map((doc, index) => {
@@ -40,6 +45,7 @@ class ArticleList extends Component {
                 userId={item.userId}
                 userProfileUrl={item.userProfileUrl}
                 displayTimestamp={item.displayTimestamp}
+                onClick={this.onItemClick}
             />
         })
 
@@ -64,4 +70,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleList);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ArticleList));

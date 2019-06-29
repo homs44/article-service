@@ -60,8 +60,7 @@ const StyledAction = styled.span`
     }
 `
 
-
-class ArticleListItem extends Component {
+class Article extends Component {
 
     static defaultProps = {
         id: null,
@@ -76,12 +75,6 @@ class ArticleListItem extends Component {
         userProfileUrl: null,
     }
 
-    onClick = () => {
-        if(this.props.onClick){
-            this.props.onClick(this.props.id);
-        }
-    }
-
     render() {
         const {
             userDisplayName,
@@ -93,6 +86,8 @@ class ArticleListItem extends Component {
             commentCnt,
             displayTimestamp,
         } = this.props;
+
+        console.log(this.props.id);
 
         return (
             <StyledCard onClick={this.onClick}>
@@ -121,4 +116,4 @@ class ArticleListItem extends Component {
     }
 }
 
-export default ArticleListItem;
+export default Article;
