@@ -36,3 +36,28 @@ export const addArticle = ({ file, content }) => {
         })
     }
 }
+
+
+/** 
+ * 게시글 리스트 가져오기
+ */
+const getArtticleListRequest = createAction(types.GET_ARTICLE_LIST_REQUEST)
+const getArtticleListSuccess = createAction(types.GET_ARTICLE_LIST_SUCCESS)
+const getArtticleListFailed = createAction(types.GET_ARTICLE_LIST_FAILED)
+
+export const getArticleList = (lastItem, count) => {
+    return (dispatch, getState) => {
+        dispatch(getArtticleListRequest())
+
+        articleAPI.getArticleList(lastItem, count)
+            .then((snapshots) => {
+                dispatch(getArtticleListSuccess({
+                    list: snapshots.docs,
+                    isConcat: lastItem ? true : false
+                }))
+            }).catch((error) => {
+                console.log(error);
+                dispatch(getArtticleListFailed(error))
+            })
+    }
+}
