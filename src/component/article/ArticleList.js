@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ArticleListItem from './ArticleListItem';
+import ArticleItem from './ArticleItem';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as articleActions from '../../module/article/actions'
@@ -32,7 +32,7 @@ class ArticleList extends Component {
         const { list, isLoading } = this.props;
         const listView = list.map((doc, index) => {
             const item = doc.data();
-            return <ArticleListItem
+            return <ArticleItem
                 key={item.id}
                 id={item.id}
                 downloadUrl={item.downloadUrl}

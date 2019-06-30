@@ -49,3 +49,52 @@ export function getArticleList(lastItem, count) {
     }
 
 }
+
+export function getArticle(articleId) {
+    return firebase.firestore().collection('articles').doc(articleId).get();
+}
+
+
+export function getCommentList(articleId, lastItem, count) {
+    const limitCount = count || 30;
+    if (lastItem) {
+        return firebase.firestore().collection("comments")
+            .where("articleId", articleId)
+            .orderBy("createdAt", "desc")
+            .startAfter(lastItem)
+            .limit(limitCount)
+            .get()
+    } else {
+        return firebase.firestore().collection("comments")
+            .where("articleId", articleId)
+            .orderBy("createdAt", "desc")
+            .limit(limitCount)
+            .get()
+    }
+}
+
+export function addComment({ userId, userDisplayName, userProfileUrl, content, articleId }) {
+
+    const commentId = uuid.v1();
+
+    return firebase.firestore().collection('comments').doc(commentId).set({
+        id: commentId,
+        userId,
+        articleId,
+        userDisplayName,
+        userProfileUrl,
+        content,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        displayTimestamp: new Date().toDateString().substring(0, 10)
+    });
+
+}
+
+export function deleteArticle(articleId){
+    return firebase.firestore().collection('articles').doc(articleId).delete();
+}
+
+export function deleteComment(commentId){
+    return firebase.firestore().collection('comments').doc(commentId).delete();
+}
