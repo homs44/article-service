@@ -14,5 +14,12 @@ export default handleActions({
         const article = doc.data();
         return Object.assign({}, state, { isLoading: false, article: article });
     },
-    [types.GET_ARTICLE_FAILED]: (state, action) => Object.assign({}, state, { isLoading: false, error: action.payload })
+    [types.GET_ARTICLE_FAILED]: (state, action) => Object.assign({}, state, { isLoading: false, error: action.payload }),
+    [types.ADD_COMMENT_SUCCESS]: (state, action) => {
+        return Object.assign({}, state, {
+            article: Object.assign({}, state.article, {
+                commentCnt: state.article.commentCnt + 1
+            })
+        })
+    }
 }, initialState)

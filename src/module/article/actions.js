@@ -78,3 +78,64 @@ export const getArticle = (articleId) => {
             })
     }
 }
+
+
+/** 
+ * 댓글 리스트 가져오기
+ */
+const getCommentListRequest = createAction(types.GET_COMMENT_LIST_REQUEST)
+const getCommentListSuccess = createAction(types.GET_COMMENT_LIST_SUCCESS)
+const getCommentListFailed = createAction(types.GET_COMMENT_LIST_FAILED)
+
+export const getCommentList = (articleId, lastItem, count) => {
+    return (dispatch, getState) => {
+
+        dispatch(getCommentListRequest())
+
+        articleAPI.getCommentList(articleId, lastItem, count)
+            .then((snapshots) => {
+                dispatch(getCommentListSuccess({
+                    list: snapshots.docs,
+                    isConcat: lastItem ? true : false
+                }))
+            }).catch((error) => {
+                console.log(error);
+                dispatch(getCommentListFailed(error))
+            })
+    }
+}
+
+/** 
+ * 댓글 등록
+ */
+const addCommentRequest = createAction(types.ADD_COMMENT_REQUEST)
+const addCommentSuccess = createAction(types.ADD_COMMENT_SUCCESS)
+export const addCommentFailed = createAction(types.ADD_COMMENT_FAILED)
+
+export const addComment = ({ articleId, content }) => {
+    return (dispatch, getState) => {
+        dispatch(addCommentRequest())
+        const state = getState();
+        if (!state.auth.user) {
+            dispatch(addCommentFailed(new Error('user not found')));
+            return;
+        }
+        const userId = state.auth.user.uid;
+        const userDisplayName = state.auth.user.displayName;
+        const userProfileUrl = state.auth.user.photoURL;
+
+        articleAPI.addComment({
+            userId,
+            userDisplayName,
+            userProfileUrl,
+            content,
+            articleId,
+        }).then((doc) => {
+            dispatch(addCommentSuccess(doc))
+        })
+        .catch((error) => {
+            console.log(error);
+            dispatch(addCommentFailed(error))
+        })
+    }
+}
