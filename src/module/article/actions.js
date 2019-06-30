@@ -61,3 +61,20 @@ export const getArticleList = (lastItem, count) => {
             })
     }
 }
+
+const getArticleRequest = createAction(types.GET_ARTICLE_REQUEST);
+const getArticleSuccess = createAction(types.GET_ARTICLE_SUCCESS);
+const getArticleFailed = createAction(types.GET_ARTICLE_FAILED);
+export const getArticle = (articleId) => {
+    return (dispatch, getState) => {
+        dispatch(getArticleRequest())
+
+        articleAPI.getArticle(articleId)
+            .then((doc) => {
+                dispatch(getArticleSuccess(doc));
+            }).catch((error) => {
+                console.log(error);
+                dispatch(getArticleFailed(error))
+            })
+    }
+}
