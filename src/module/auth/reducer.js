@@ -5,6 +5,7 @@ import signUpWithEmail from './email/signUpWithEmail'
 import signInWithFacebook from './facebook/signInWithFacebook'
 import signInWithGoogle from './google/signInWithGoogle'
 import user from './common/User';
+import loginModal from './common/LoginModal'
 
 export default combineReducers({
     signOut,
@@ -12,5 +13,6 @@ export default combineReducers({
     signUpWithEmail,
     signInWithFacebook,
     signInWithGoogle,
-    user
+    user,
+    loginModal
 })

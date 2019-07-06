@@ -106,3 +106,7 @@ export const signOut = () => {
             })
     }
 }
+
+
+export const openLoginModal = createAction(types.OPEN_LOGIN_MODAL);
+export const closeLoginModal = createAction(types.CLOSE_LOGIN_MODAL);

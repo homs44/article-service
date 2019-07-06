@@ -53,7 +53,7 @@ const StyledActions = styled.div`
     padding: 0 16px 16px 16px;
 `
 const StyledAction = styled.span`
-    color:gray;
+    color:${props => props.isLiked ? "blue" : "gray"};
     .count {
         margin-left: 8px;
         margin-right:16px;
@@ -74,11 +74,18 @@ class ArticleItem extends Component {
         userDisplayName: null,
         userId: null,
         userProfileUrl: null,
+        isLiked: false,
     }
 
     onClick = () => {
-        if(this.props.onClick){
+        if (this.props.onClick) {
             this.props.onClick(this.props.id);
+        }
+    }
+
+    onClickLike = () => {
+        if (this.props.onClickLike) {
+            this.props.onClickLike(this.props.id);
         }
     }
 
@@ -92,6 +99,7 @@ class ArticleItem extends Component {
             likeCnt,
             commentCnt,
             displayTimestamp,
+            isLiked
         } = this.props;
 
         return (
@@ -107,7 +115,7 @@ class ArticleItem extends Component {
                 </StyledContent>
 
                 <StyledActions>
-                    <StyledAction>
+                    <StyledAction onClick={this.onClickLike} isLiked={isLiked}>
                         <span>좋아요</span>
                         <span className="count">{likeCnt}</span>
                     </StyledAction>

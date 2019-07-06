@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 
 class ArticlePage extends Component {
     render() {
+        
         return (
             <Container>
                 <Grid centered>

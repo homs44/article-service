@@ -7,21 +7,36 @@ import Header from './component/header/Header'
 import ArticleListPage from './page/article/ArticleListPage';
 import ArticlePage from './page/article/ArticlePage';
 import AddArticlePage from './page/article/AddArticlePage';
+import BackHeader from './component/header/BackHeader'
+import LoginModal from './component/auth/LoginModal'
 
 class App extends Component {
   render() {
     return (
       <Fragment>
-        <Header />
+        <LoginModal />
         <Switch>
-          <Route path="/" exact component={ArticleListPage} />
-          <Route path="/sign-in" exact component={SignInPage} />
-          <Route path="/sign-in/email" component={SignInWithEmailPage} />
-          <Route path="/sign-up/email" component={SignUpWithEmailPage} />
-          <Route path="/add-article" component={AddArticlePage} />
-          <Route path="/articles/:articleId" component={ArticlePage} />
+          <Route path="/articles/:articleId">
+            <BackHeader />
+            <Route path="/articles/:articleId" component={ArticlePage} ></Route>
+          </Route>
+
+          <Route path="/" >
+            <Header />
+            <Route path="/" exact component={ArticleListPage} />
+            <Route path="/sign-in" exact component={SignInPage} />
+            <Route path="/sign-in/email" component={SignInWithEmailPage} />
+            <Route path="/sign-up/email" component={SignUpWithEmailPage} />
+            <Route path="/add-article" component={AddArticlePage} />
+          </Route>
+
         </Switch>
-      </Fragment>
+
+        <Switch>
+          <Route path="/add-article"></Route>
+          <Route path="/articles"></Route>
+        </Switch>
+      </Fragment >
     );
   }
 }

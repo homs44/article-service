@@ -15,12 +15,18 @@ class Article extends Component {
     componentDidMount() {
         if (this.props.id) {
             this.props.articleActions.getArticle(this.props.id);
+            this.props.articleActions.getLike(this.props.id);
         }
+    }
+
+    onClickLike = (articleId) => {
+        this.props.articleActions.likeArticle(articleId);
     }
 
     render() {
         const {
             article,
+            isLiked,
         } = this.props;
 
         return article ? (
@@ -36,6 +42,8 @@ class Article extends Component {
                 userId={article.userId}
                 userProfileUrl={article.userProfileUrl}
                 displayTimestamp={article.displayTimestamp}
+                onClickLike={this.onClickLike}
+                isLiked={isLiked}
             />
         ) : (
                 <Loader active />
@@ -47,7 +55,8 @@ const mapStateToProps = (state) => {
     return {
         isLoading: state.article.getArticle.isLoading,
         error: state.article.getArticle.error,
-        article: state.article.getArticle.article
+        article: state.article.getArticle.article,
+        isLiked: state.article.like.isLiked
     }
 }
 

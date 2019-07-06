@@ -133,9 +133,59 @@ export const addComment = ({ articleId, content }) => {
         }).then((doc) => {
             dispatch(addCommentSuccess(doc))
         })
-        .catch((error) => {
-            console.log(error);
-            dispatch(addCommentFailed(error))
-        })
+            .catch((error) => {
+                console.log(error);
+                dispatch(addCommentFailed(error))
+            })
     }
 }
+
+
+const likeArticleRequest = createAction(types.LIKE_ARTICLE_REQUEST)
+const likeArticleSuccess = createAction(types.LIKE_ARTICLE_SUCCESS)
+const likeArticleFailed = createAction(types.LIKE_ARTICLE_FAILED)
+
+export const likeArticle = (articleId) => {
+    return (dispatch, getState) => {
+        dispatch(likeArticleRequest())
+        const state = getState();
+        if (!state.auth.user) {
+            dispatch(likeArticleFailed(new Error('user not found')));
+            return;
+        }
+        const userId = state.auth.user.uid;
+
+        articleAPI.likeArticle(articleId, userId)
+            .then((result) => {
+                dispatch(likeArticleSuccess(result))
+            }).catch((error) => {
+                dispatch(likeArticleFailed(error))
+            })
+    }
+}
+
+
+
+const getLikeRequest = createAction(types.GET_LIKE_REQUEST)
+const getLikeSuccess = createAction(types.GET_LIKE_SUCCESS)
+const getLikeFailed = createAction(types.GET_LIKE_FAILED)
+
+export const getLike = (articleId) => {
+    return (dispatch, getState) => {
+        dispatch(getLikeRequest())
+        const state = getState();
+        if (!state.auth.user) {
+            dispatch(getLikeFailed(new Error('user not found')));
+            return;
+        }
+        const userId = state.auth.user.uid;
+
+        articleAPI.getLike(articleId, userId)
+            .then((result) => {
+                dispatch(getLikeSuccess(result))
+            }).catch((error) => {
+                dispatch(getLikeFailed(error))
+            })
+    }
+}
+
