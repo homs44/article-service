@@ -5,18 +5,15 @@ export function addArticle({ file, content, userId, userDisplayName, userProfile
 
     const filename = uuid.v1();
     const extension = file.name.split('.').pop();
-    const url = `articles/${filename}.${extension}`;
+    const image = `articles/${filename}.${extension}`;
 
-    const articleRef = firebase.storage().ref().child(url);
+    const articleRef = firebase.storage().ref().child(image);
     return articleRef.put(file)
-        .then((snapshot) => {
-            return snapshot.ref.getDownloadURL();
-        })
-        .then((downloadUrl) => {
+        .then(() => {
             const articleId = uuid.v1();
             return firebase.firestore().collection('articles').doc(articleId).set({
                 id: articleId,
-                downloadUrl,
+                image,
                 content,
                 userId,
                 userDisplayName,
