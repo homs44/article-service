@@ -32,7 +32,7 @@ class Article extends Component {
         return article ? (
             <ArticleItem
                 id={article.id}
-                image={article.image}
+                images={article.images}
                 content={article.content}
                 commentCnt={article.commentCnt}
                 likeCnt={article.likeCnt}

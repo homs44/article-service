@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import FirebaseImage from "../common/FirebaseImage";
+
+const sliderOption = {
+  dots: false,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows: true
+};
 
 const StyledCard = styled.div`
   border: 1px solid #eee;
@@ -64,7 +74,7 @@ const StyledAction = styled.span`
 class ArticleItem extends Component {
   static defaultProps = {
     id: null,
-    image: null,
+    images: [],
     content: null,
     commentCnt: 0,
     likeCnt: 0,
@@ -94,20 +104,24 @@ class ArticleItem extends Component {
       userProfileUrl,
       createdAt,
       content,
-      image,
+      images,
       likeCnt,
       commentCnt,
       displayTimestamp,
       isLiked
     } = this.props;
 
-    let src = null;
+    const imageViews = images.map((image, index) => {
+      let temp = image.split("/");
+      temp[temp.length - 1] = "thumb_" + temp[temp.length - 1];
+      const src = temp.join("/");
+      return (
+        <div key={index}>
+          <FirebaseImage width="100%" height={300} src={src} />
+        </div>
+      );
+    });
 
-    if (image) {
-      src = image.split("/");
-      src[src.length - 1] = "thumb_" + src[src.length - 1];
-      src = src.join("/");
-    }
     return (
       <StyledCard onClick={this.onClick}>
         <StyledHeader profileImageUrl={userProfileUrl}>
@@ -116,7 +130,7 @@ class ArticleItem extends Component {
           <div className="datetime">{displayTimestamp}</div>
         </StyledHeader>
         <StyledContent>
-          <FirebaseImage width="100%" height={300} src={src} />
+          <Slider {...sliderOption}>{imageViews}</Slider>
           <div className="content">{content}</div>
         </StyledContent>
 

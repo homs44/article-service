@@ -10,7 +10,7 @@ const addArticleRequest = createAction(types.ADD_ARTICLE_REQUEST)
 const addArticleSuccess = createAction(types.ADD_ARTICLE_SUCCESS)
 export const addArticleFailed = createAction(types.ADD_ARTICLE_FAILED)
 
-export const addArticle = ({ file, content }) => {
+export const addArticle = ({ files, content }) => {
     return (dispatch, getState) => {
         dispatch(addArticleRequest())
         const state = getState();
@@ -23,7 +23,7 @@ export const addArticle = ({ file, content }) => {
         const userProfileUrl = state.auth.user.photoURL;
 
         articleAPI.addArticle({
-            file,
+            files,
             content,
             userId,
             userDisplayName,
